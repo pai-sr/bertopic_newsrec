@@ -8,9 +8,9 @@ from bertopic import BERTopic
 from bertopic.vectorizers import ClassTfidfTransformer
 from bertopic.dimensionality import BaseDimensionalityReduction
 from sklearn.linear_model import LogisticRegression
+from sentence_transformers import SentenceTransformer
 
-
-def load_basic_model():
+def build_model():
     custom_tokenizer = CustomTokenizer(Mecab())
     vectorizer = CountVectorizer(tokenizer=custom_tokenizer, max_features=3000)
 
@@ -24,21 +24,15 @@ def load_basic_model():
         umap_model=empty_dimensionality_model,
         hdbscan_model=clf,
         ctfidf_model=ctfidf_model,
-        calculate_probabilities=True
+        calculate_probabilities=True,
+        verbose=True
     )
 
     return topic_model
 
-def fit_model(save_path, root_path):
-    model = load_basic_model()
-
-    train_dt, test_dt = fetch_data(rootdir=root_path)
-    docs = [dt[0] for dt in train_dt]
-    y = [int(dt[1]) for dt in train_dt]
-    test_docs = [dt[0] for dt in test_dt]
-    y_true = [int(dt[1]) for dt in test_dt]
-    category = ["정치", "경제", "사회", "생활/문화", "세계", "기술/IT", "연예", "스포츠"]
-
+def fit_model(save_path, root_path, data_type):
+    model = build_model()
+    docs, y = fetch_data(rootdir=root_path, data_type=data_type)
     model.fit(documents=docs, y=y)
 
     model.save(save_path)
