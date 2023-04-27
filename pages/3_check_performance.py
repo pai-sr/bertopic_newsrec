@@ -1,5 +1,5 @@
 import streamlit as st
-from newsrec.tokenizer import CustomTokenizer
+from topicrec.tokenizer import CustomTokenizer
 st.set_page_config(page_title="입력 데이터에 대한 주제 추천")
 st.title("주제 추천 솔루션")
 
@@ -15,7 +15,7 @@ if "model" in st.session_state:
 
 if st.button("성능 확인"):
     ### LOAD DATA ###
-    from newsrec.dataset import fetch_data
+    from topicrec.dataset import fetch_data
     @st.cache_data
     def wrap_fetch_data(rootdir, data_type, train_yn=False):
         return fetch_data(rootdir, data_type, train_yn=False)

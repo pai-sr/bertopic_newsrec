@@ -1,5 +1,5 @@
 import streamlit as st
-from newsrec.tokenizer import CustomTokenizer
+from topicrec.tokenizer import CustomTokenizer
 st.set_page_config(page_title="입력 데이터에 대한 주제 추천")
 st.title("주제 추천 솔루션")
 

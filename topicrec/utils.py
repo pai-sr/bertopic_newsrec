@@ -1,4 +1,5 @@
 import json
+import os
 
 root_path = "/mnt/prj/BERTopic/"
 data_path = "data/patData"
