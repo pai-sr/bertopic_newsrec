@@ -1,7 +1,7 @@
-from newsrec.dataset import fetch_data
+from topicrec.dataset import fetch_data
 
 from konlpy.tag import Mecab
-from newsrec.tokenizer import CustomTokenizer
+from topicrec.tokenizer import CustomTokenizer
 from sklearn.feature_extraction.text import CountVectorizer
 
 from bertopic import BERTopic
