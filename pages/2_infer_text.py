@@ -1,4 +1,6 @@
 import streamlit as st
+import plotly.express as px
+import matplotlib.pyplot as plt
 from topicrec.tokenizer import CustomTokenizer
 st.set_page_config(page_title="입력 데이터에 대한 주제 추천")
 st.title("주제 추천 솔루션")
@@ -26,6 +28,18 @@ if "model" in st.session_state:
         umap_embeddings = model.umap_model.transform(embeddings)
         probs = model.hdbscan_model.predict_proba(umap_embeddings)
         df = pd.DataFrame([(c, '{:.3f}'.format(t)) for t, c in zip(probs[0], category)], columns=["topic", "probs"])
-        st.write("prob_list : ", df.sort_values(by="probs", ascending=False).reset_index(drop=True))
+        df.sort_values(by="probs", ascending=False).reset_index(drop=True)
+        fig = px.pie(df, values="probs", names="topic", title="예측 topic 상세")
+        fig.update_traces(textposition='inside', textinfo='percent+label')
+        st.plotly_chart(fig)
+
+        st.subheader("추천 분석 결과")
+        if data_type == "news":
+            window = 10
+        else:
+            window = 4
+        topic_distr, topic_token_distr = model.approximate_distribution(txt, calculate_tokens=True, window=window)
+        dist_df = model.visualize_approximate_distribution(txt, topic_token_distr[0])
+        st.dataframe(dist_df)
     else:
         pass
