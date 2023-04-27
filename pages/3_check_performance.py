@@ -10,7 +10,10 @@ st.subheader("본 모델의 성능")
 if "model" in st.session_state:
     model = st.session_state["model"]
     data_type = st.session_state["data_type"]
-    test_data_path = st.session_state["test_data_path"]
+    if data_type == "news":
+        data_path = st.session_state["data_path"]
+    elif data_type == "patent":
+        data_path = st.session_state["test_data_path"]
     inv_org_mappings = st.session_state["inv_org_mappings"]
 
 if st.button("성능 확인"):
@@ -20,7 +23,7 @@ if st.button("성능 확인"):
     def wrap_fetch_data(rootdir, data_type, train_yn=False):
         return fetch_data(rootdir, data_type, train_yn=False)
 
-    test_docs, y_true = wrap_fetch_data(test_data_path, data_type, False)
+    test_docs, y_true = wrap_fetch_data(data_path, data_type, False)
 
     ### TEST DATA INFERENCE ###
     from tqdm import tqdm
