@@ -1,7 +1,9 @@
 import streamlit as st
 from newsrec.tokenizer import CustomTokenizer
-st.set_page_config(page_title="입력 데이터에 대한 뉴스 주제 추천")
-st.title("뉴스기사 주제 추천 솔루션")
+st.set_page_config(page_title="입력 데이터에 대한 주제 추천")
+st.title("주제 추천 솔루션")
+
+checked = 0
 
 ### PERFORMANCE CHECK ###
 st.subheader("본 모델의 성능")
@@ -24,15 +26,21 @@ if st.button("성능 확인"):
     from tqdm import tqdm
     from sklearn.metrics import accuracy_score
     y_preds = []
-    with st.spinner("Waiting. . ."):
-        for dt_test in tqdm(test_docs):
-            if data_type == "news":
-                y_pred, _ = model.transform(dt_test)
-                y_pred = y_pred[0]
-            elif data_type == "patent":
-                y_pred, _ = model.transform(dt_test)
-                y_pred = inv_org_mappings[y_pred[0]]
-            y_preds.append(y_pred)
+    if checked == 0:
+        with st.spinner("Waiting. . ."):
+            for dt_test in tqdm(test_docs):
+                if data_type == "news":
+                    y_pred, _ = model.transform(dt_test)
+                    y_pred = y_pred[0]
+                elif data_type == "patent":
+                    y_pred, _ = model.transform(dt_test)
+                    y_pred = inv_org_mappings[y_pred[0]]
+                y_preds.append(y_pred)
+            checked = 1
+            st.session_state["checked"] = checked
+            st.session_state["y_preds"] = y_preds
+    else:
+        y_preds = st.session_state["y_preds"]
 
     acc = accuracy_score(y_true, y_preds)
     st.write("accuracy : ", acc)

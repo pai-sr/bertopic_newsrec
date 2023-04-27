@@ -8,9 +8,12 @@ from newsrec.model import load_model
 from newsrec.tokenizer import CustomTokenizer
 from newsrec.utils import set_custom_label
 
-model_path = "models/patent_supervised_kr"
-train_data_path = "patData/1.Training"
-test_data_path = "patData/2.Validation"
+root_path = "/mnt/prj/BERTopic/"
+
+
+model_path = root_path + "models/patent_supervised_kr"
+train_data_path = root_path + "data/patData/1.Training"
+test_data_path = root_path + "data/patData/2.Validation"
 model = load_model(model_path)
 
 ### SET CUSTOM LABEL ###

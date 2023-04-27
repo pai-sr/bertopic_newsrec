@@ -1,6 +1,9 @@
 import json
 
-with open("patData/label_mapping.json", "r", encoding="utf-8") as f:
+root_path = "/mnt/prj/BERTopic/"
+data_path = "data/patData"
+
+with open(os.path.join(root_path+data_path, "label_mapping.json"), "r", encoding="utf-8") as f:
     label_mapping = json.load(f)
 
 news_category = ["정치", "경제", "사회", "생활/문화", "세계", "기술/IT", "연예", "스포츠"]
