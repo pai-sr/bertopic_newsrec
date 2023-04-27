@@ -38,5 +38,11 @@ def fit_model(save_path, root_path, data_type):
     model.save(save_path)
 
 def load_model(model_path):
-    model = BERTopic.load(model_path)
+    try:
+        model = BERTopic.load(model_path)
+        model = BERTopic.load(model_path)
+    except RuntimeError as e:
+        model_path = BERTopic.load(model_path + "_noembedding")
+        embedding_model = SentenceTransformer("sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens")
+        model = BERTopic.load(model_path, embedding_model=embedding_model)
     return model
