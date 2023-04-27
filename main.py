@@ -4,11 +4,12 @@ st.title("주제 추천 솔루션")
 st.write("텍스트의 주제를 추천해주는 솔루션입니다.")
 
 ### LOAD MODEL ###
+from pathlib import Path
 from topicrec.model import load_model
 from topicrec.tokenizer import CustomTokenizer
 from topicrec.utils import set_custom_label
 
-root_path = "/mnt/prj/BERTopic/"
+root_path = str(Path(__file__).parent) + "/"
 
 model_path = root_path + "models/patent_supervised_kr"
 train_data_path = root_path + "data/patData/1.Training"
