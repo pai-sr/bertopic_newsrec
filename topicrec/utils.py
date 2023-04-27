@@ -1,7 +1,8 @@
 import json
 import os
+from pathlib import Path
 
-root_path = "/mnt/prj/BERTopic/"
+root_path = str(Path(__file__).parent.parent) + "/"
 data_path = "data/patData"
 
 with open(os.path.join(root_path+data_path, "label_mapping.json"), "r", encoding="utf-8") as f:
