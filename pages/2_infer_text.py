@@ -10,10 +10,12 @@ st.subheader("주제 추천")
 if "model" in st.session_state:
 
     import pandas as pd
+    from topicrec.utils import highlight_color, text_color
     model = st.session_state["model"]
     category = st.session_state["category"]
     data_type = st.session_state["data_type"]
     inv_org_mappings = st.session_state["inv_org_mappings"]
+    mappings = st.session_state["mappings"]
 
     txt = st.text_area("주제를 추천받을 텍스트 입력", "텍스트를 입력하세요")
 
@@ -38,8 +40,19 @@ if "model" in st.session_state:
             window = 10
         else:
             window = 4
+        topic_df = model.get_topic_info()
+        topic_df["Class"] = topic_df.Topic.map(mappings)
+        topic_dict = {k:v for k, v in zip(topic_df["Name"], topic_df["Class"])}
+
         topic_distr, topic_token_distr = model.approximate_distribution(txt, calculate_tokens=True, window=window)
         dist_df = model.visualize_approximate_distribution(txt, topic_token_distr[0])
+
+        dist_df.data.set_index(dist_df.data.index.map(lambda x:topic_dict[x]), inplace=True)
+        dist_df = dist_df.data.loc[dist_df.data.apply(max, axis=1).sort_values(ascending=False).index]
+        dist_df = dist_df.style.format("{:.3f}") \
+              .background_gradient(cmap='Blues', axis=None) \
+              .applymap(lambda x: text_color(x)) \
+              .apply(highlight_color, axis=None)
         st.dataframe(dist_df)
     else:
         pass

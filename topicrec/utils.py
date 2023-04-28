@@ -1,6 +1,8 @@
 import json
 import os
 from pathlib import Path
+import pandas as pd
+import numpy as np
 
 root_path = str(Path(__file__).parent.parent) + "/"
 data_path = "data/patData"
@@ -24,3 +26,11 @@ def set_custom_label(model, data_type):
     else:
         raise NotImplementedError
     return model, org_mappings, mappings, category
+
+def text_color(val):
+    color = 'white' if val == 0 else 'black'
+    return 'color: %s' % color
+
+def highlight_color(data, color='white'):
+    attr = 'background-color: {}'.format(color)
+    return pd.DataFrame(np.where(data == 0, attr, ''), index=data.index, columns=data.columns)

@@ -41,6 +41,7 @@ for k, v in org_mappings.items():
 st.session_state["model"] = model
 st.session_state["category"] = category
 st.session_state["data_type"] = data_type
+st.session_state["mappings"] = mappings
 st.session_state["org_mappings"] = org_mappings
 st.session_state["inv_org_mappings"] = inv_org_mappings
 
